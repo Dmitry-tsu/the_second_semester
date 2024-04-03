@@ -10,9 +10,15 @@ int main() {
     if (createFileWithRandomNumbers(fileName, numbersCount, minValue, maxValue))
     {
         std::cout << "File created successfully." << std::endl;
-    }
-    else
-    {
+        if (isFileSorted(fileName))
+        {
+            std::cout << "Array in the file is sorted." << std::endl;
+        }
+        else
+        {
+            std::cout << "Array in the file is not sorted." << std::endl;
+        }
+    } else {
         std::cout << "Failed to create file." << std::endl;
     }
 

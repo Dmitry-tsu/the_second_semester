@@ -3,7 +3,7 @@
 #include <random>
 #include <iostream>
 
-void generateRandomArray(std::vector<int>& arr, int minValue, int maxValue)
+void generateNumbers(std::vector<int>& arr, int minValue, int maxValue)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -18,7 +18,7 @@ void generateRandomArray(std::vector<int>& arr, int minValue, int maxValue)
 bool createFileWithRandomNumbers(const std::string& fileName, int numbersCount, int minValue, int maxValue)
 {
     std::vector<int> arr(numbersCount);
-    generateRandomArray(arr, minValue, maxValue);
+    generateNumbers(arr, minValue, maxValue);
 
     std::ofstream file(fileName);
     if (!file)
@@ -33,5 +33,30 @@ bool createFileWithRandomNumbers(const std::string& fileName, int numbersCount, 
 
     file.close();
     std::cout << "Array has been written to " << fileName << std::endl;
+    return true;
+}
+
+bool isFileSorted(const std::string& fileName)
+{
+    std::ifstream file(fileName);
+    if (!file)
+    {
+        std::cerr << "Unable to open file " << fileName << std::endl;
+        return false;
+    }
+
+    int prev = std::numeric_limits<int>::min();
+    int curr;
+    while (file >> curr)
+    {
+        if (curr < prev)
+        {
+            file.close();
+            return false;
+        }
+        prev = curr;
+    }
+
+    file.close();
     return true;
 }
