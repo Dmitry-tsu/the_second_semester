@@ -15,7 +15,7 @@ void generateNumbers(std::vector<int>& arr, int minValue, int maxValue)
     }
 }
 
-bool createFileWithRandomNumbers(const std::string& fileName, int numbersCount, int minValue, int maxValue)
+bool writeToFile(const std::string& fileName, int numbersCount, int minValue, int maxValue)
 {
     std::vector<int> arr(numbersCount);
     generateNumbers(arr, minValue, maxValue);
@@ -28,7 +28,8 @@ bool createFileWithRandomNumbers(const std::string& fileName, int numbersCount, 
 
     for (int num : arr)
     {
-        file << num << std::endl;
+        file.write(reinterpret_cast<const char*>(&num), sizeof(int));
+        //file << num << std::endl;
     }
 
     file.close();
@@ -47,7 +48,7 @@ bool isFileSorted(const std::string& fileName)
 
     int prev = std::numeric_limits<int>::min();
     int curr;
-    while (file >> curr)
+    while (file.read(reinterpret_cast<char*>(&curr), sizeof(int)))
     {
         if (curr < prev)
         {
@@ -59,4 +60,48 @@ bool isFileSorted(const std::string& fileName)
 
     file.close();
     return true;
+}
+
+void sortFile(const std::string& fileName)
+{
+    std::vector<int> arr;
+    std::ifstream file(fileName, std::ios::binary);
+    if (!file)
+    {
+        std::cerr << "Unable to open file " << fileName << std::endl;
+        return;
+    }
+
+    int num;
+    while (file.read(reinterpret_cast<char*>(&num), sizeof(int)))
+    {
+        arr.push_back(num);
+        //std::cout << num << " ";
+
+    }
+    file.close();
+
+    std::sort(arr.begin(), arr.end());
+
+    /*
+    for (int num : arr)
+    {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+    */
+
+    std::ofstream outputFile(fileName, std::ios::binary);
+    if (!outputFile)
+    {
+        std::cerr << "Unable to open file " << fileName << " for writing." << std::endl;
+        return;
+    }
+
+    for (int num : arr)
+    {
+        outputFile.write(reinterpret_cast<const char*>(&num), sizeof(int));
+        //std::cout << num << " ";
+    }
+    outputFile.close();
 }

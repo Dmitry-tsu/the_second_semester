@@ -3,13 +3,14 @@
 
 int main() {
     const std::string fileName = "file.txt";
-    const int numbersCount = 1000000;
+    const int numbersCount = 10;
     const int minValue = 0;
-    const int maxValue = 100000;
+    const int maxValue = 10;
 
-    if (createFileWithRandomNumbers(fileName, numbersCount, minValue, maxValue))
+    if (writeToFile(fileName, numbersCount, minValue, maxValue))
     {
         std::cout << "File created successfully." << std::endl;
+        sortFile(fileName);
         if (isFileSorted(fileName))
         {
             std::cout << "Array in the file is sorted." << std::endl;
@@ -18,7 +19,9 @@ int main() {
         {
             std::cout << "Array in the file is not sorted." << std::endl;
         }
-    } else {
+    }
+    else
+    {
         std::cout << "Failed to create file." << std::endl;
     }
 
