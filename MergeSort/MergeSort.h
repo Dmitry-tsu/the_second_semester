@@ -3,11 +3,12 @@
 
 #include <iostream>
 #include <fstream>
-#include <thread>
 #include <chrono>
 #include <cassert>
+#include <vector>
 
 void outputFile(const std::string& fileName);
 bool isFileContainsSortedArray(const std::string &fileName);
+void naturalMergeSort3Files(const std::string& fileName);
 
 #endif //THE_SECOND_SEMESTER_MERGESORT_H
